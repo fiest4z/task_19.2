@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "task-19-2"
+version = "0.1.0"
+description = ""
+authors = ["Mikhail Belyaev <fiestaz1337@gmail.com>"]
+readme = "README.md"
+packages = [{include = "task_19"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^5.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
