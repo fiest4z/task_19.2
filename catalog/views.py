@@ -8,4 +8,9 @@ def home(request):
 
 
 def contacts(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        phone = request.POST['phone']
+        message = request.POST['message']
+        print(f'{name} {phone} {message}')
     return render(request, 'contacts.html')
