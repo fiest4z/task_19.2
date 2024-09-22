@@ -15,8 +15,9 @@ class BlogPost(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = ''
-        verbose_name_plural = ''
-        ordering_at = ('-created_at',)
+        verbose_name = 'статья'
+        verbose_name_plural = 'статьи'
+        ordering = ['created_at']
+
 
 
