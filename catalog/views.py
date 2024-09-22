@@ -1,14 +1,16 @@
 from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView, DetailView
 
 from catalog.models import Product
 
 
 # Create your views here.
 
-def home(request):
-    product_list = Product.objects.all()
-    context = {"product_list": product_list}
-    return render(request, 'product_list.html', context)
+class ProductListView(ListView):
+    model = Product
+
+class ProductDetailView(DetailView):
+    model = Product
 
 
 def contacts(request):
@@ -19,7 +21,3 @@ def contacts(request):
         print(f'{name} {phone} {message}')
     return render(request, 'contacts.html')
 
-def product_details(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    context = {"product": product}
-    return render(request, 'product_details.html', context)
