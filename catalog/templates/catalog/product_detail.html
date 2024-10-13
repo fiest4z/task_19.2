@@ -12,6 +12,12 @@
                     <img class="card-img-top" src="{{ product.preview | mymedia }}">
                     <div class="card-body">
                         <p class="card-text">{{ object.name }}</p>
+                        {% if object.owner %}
+                            <div class="card-footer text-muted">
+                                Создано: {{ object.owner }}
+                             </div>
+                        {% endif %}
+                        <p class="lead">{{ object.price }}</p>
                         <p class="card-text">{{ object.description|slice:":100" }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">

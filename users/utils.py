@@ -1,7 +1,9 @@
-from django.core.mail import send_mail
-from string import ascii_letters, digits
 from random import choices
+from string import ascii_letters, digits
 
+from django.core.mail import send_mail
+
+from config.settings import EMAIL_HOST_USER
 
 
 def send_email_confirm(url, email):
@@ -9,8 +11,8 @@ def send_email_confirm(url, email):
         subject='Подтверждение регистрации',
         message=f'Для подтверждения регистрации пройдите по ссылке {url}',
         from_email=EMAIL_HOST_USER,
-        recipient_list = [email],
-        )
+        recipient_list=[email],
+    )
 
 
 def send_email_reset_password(password, email):
@@ -20,6 +22,7 @@ def send_email_reset_password(password, email):
         from_email=EMAIL_HOST_USER,
         recipient_list=[email],
     )
+
 
 def generate_random_password():
     data = ascii_letters + digits
