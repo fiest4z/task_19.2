@@ -1,5 +1,6 @@
 {% extends 'home.html' %}
 {% load my_tags %}
+{% load moderator_only %}
 {% block content%}
 <div class="album py-5 bg-body-tertiary">
     <div class="container">
@@ -25,12 +26,14 @@
                                role="button">Подробнее</a>
                             <a class="btn btn-outline-success" href="#" role="button">{{ product.price }}</a>
                         </div>
+                        {% if user == object.owner or user|has_required_perms %}
                         <div class="btn-group d-flex justify-content-center">
                             <a class="btn btn-outline-warning me-1" href="{% url 'catalog:product_edit' product.pk %}"
                                role="button">Редактировать</a>
                             <a class="btn btn-outline-danger" href="{% url 'catalog:product_delete' product.pk %}"
                                role="button">Удалить</a>
                         </div>
+                        {% endif %}
                     </div>
 
                 </div>

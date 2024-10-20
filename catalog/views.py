@@ -1,8 +1,9 @@
+from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, DeleteView, CreateView, UpdateView
 
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
 from catalog.mixins import CustomLoginRequiredMixin
 from catalog.models import Product, Version
 
@@ -11,6 +12,11 @@ from catalog.models import Product, Version
 
 class ProductListView(ListView):
     model = Product
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        queryset = queryset.filter(is_published=True)
+        return queryset
 
 
 class ProductCreateView(CustomLoginRequiredMixin, CreateView):
@@ -77,6 +83,30 @@ class ProductUpdateView(CustomLoginRequiredMixin, UpdateView):
             formset.save()
             return super().form_valid(form)
         return self.form_invalid(form)
+
+    def get_form_class(self):
+        required_perms = [
+            "catalog.can_unpublish_product",
+            "catalog.can_change_description",
+            "catalog.can_change_category",
+        ]
+        user = self.request.user
+        if user == self.object.owner or user.is_superuser:
+            return ProductForm
+        if user.has_perms(required_perms):
+            return ProductModeratorForm
+        raise PermissionDenied
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if (
+                self.request.user == self.object.owner
+                or self.request.user.groups.filter(name="moderator").exists()
+                or self.request.user.is_superuser
+        ):
+            return self.object
+
+        raise PermissionDenied
 
 
 class ProductDetailView(DetailView):

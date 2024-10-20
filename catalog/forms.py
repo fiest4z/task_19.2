@@ -30,6 +30,7 @@ class ProductForm(forms.ModelForm):
             "preview": forms.ClearableFileInput(attrs={"class": "form-control"}),
             "category": forms.Select(attrs={"class": "form-select"}),
             "price": forms.NumberInput(attrs={"class": "form-control"}),
+            "is_published": forms.CheckboxInput(attrs={"class": "form-check-input"})
         }
 
     def clean_name(self):
@@ -56,4 +57,20 @@ class VersionForm(forms.ModelForm):
             "version_number": forms.TextInput(attrs={"class": "form-control"}),
             "version_name": forms.TextInput(attrs={"class": "form-control"}),
             "is_active": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        }
+
+
+class ProductModeratorForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ("description", "category", "is_published")
+        widgets = {
+            "description": forms.Textarea(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Введите описание товара",
+                }
+            ),
+            "category": forms.Select(attrs={"class": "form-select"}),
+            "is_published": forms.CheckboxInput(attrs={"class": "form-check-input"}),
         }
