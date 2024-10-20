@@ -6,8 +6,8 @@ from users.models import User
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "price", "category")
-    list_filter = ("price", "name", "category")
+    list_display = ("id", "name", "price", "category", "is_published")
+    list_filter = ("price", "name", "category", "is_published")
     search_fields = ("name", "description")
 
 
@@ -21,8 +21,3 @@ class VersionAdmin(admin.ModelAdmin):
     list_display = ("product", "version_number", "version_name", "is_active")
     list_filter = ("is_active", "product")
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('id', 'email', 'phone', 'avatar', 'country')
-    list_filter = ('country',)
-    search_fields = ('email', 'country')
