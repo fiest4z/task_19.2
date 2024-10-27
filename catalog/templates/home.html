@@ -28,7 +28,6 @@
     <meta name="theme-color" content="#712cf9">
 
 
-
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
@@ -48,10 +47,8 @@
 </svg>
 
 
-
-
 <header data-bs-theme="dark">
-{% include 'catalog/includes/inc_menu.html' %}
+    {% include 'catalog/includes/inc_menu.html' %}
 </header>
 
 <main>
@@ -66,10 +63,22 @@
                     <a href='{% url "catalog:product_create" %}' class="btn btn-danger my-2">Создать товар</a>
                 </p>
             </div>
+            <div class="mb-3">
+                <a href="{% url 'catalog:product_list' %}"
+                   class="btn {% if not request.GET.category or request.GET.category == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                    Все
+                </a>
+                {% for category in categories %}
+                <a href="?category={{ category.name }}"
+                   class="btn {% if request.GET.category == category.name %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                    {{ category.name }}
+                </a>
+                {% endfor %}
+            </div>
         </div>
     </section>
-{% block content%}
-{% endblock%}
+    {% block content%}
+    {% endblock%}
 
 </main>
 

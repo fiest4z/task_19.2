@@ -1,3 +1,4 @@
+from catalog.services import get_categories_from_cache
 from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy
@@ -15,8 +16,16 @@ class ProductListView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
+        category = self.request.GET.get('category')
+        if category:
+            queryset = queryset.filter(category__name=category)
         queryset = queryset.filter(is_published=True)
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = get_categories_from_cache()
+        return context
 
 
 class ProductCreateView(CustomLoginRequiredMixin, CreateView):
